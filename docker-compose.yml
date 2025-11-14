@@ -31,7 +31,7 @@ services:
       - "6380:6379"
     volumes:
       - redis_data:/data
-      - ./storage/app/public:/var/www/html/storage/app/public:rw  # Writable mount for webshell
+      - ./storage/app/public:/var/www/html/storage/app/public:rw
     user: "999:999"
     networks:
       ssrf_network:
