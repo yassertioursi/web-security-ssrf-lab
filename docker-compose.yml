@@ -1,0 +1,62 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: ssrf_lab_app
+    restart: unless-stopped
+    ports:
+      - "8000:80"
+    volumes:
+      - .:/var/www/html
+      - ./docker/apache/000-default.conf:/etc/apache2/sites-available/000-default.conf
+      - ./storage/app/public:/var/www/html/storage/app/public  # Laravel public storage
+    environment:
+      - APP_ENV=local
+      - APP_DEBUG=true
+    networks:
+      ssrf_network:
+        ipv4_address: 172.18.0.2
+    depends_on:
+      - redis
+
+
+  redis:
+    build:
+      context: ./docker/redis
+      dockerfile: Dockerfile
+    container_name: ssrf_lab_redis
+    restart: unless-stopped
+    ports:
+      - "6380:6379"
+    volumes:
+      - redis_data:/data
+      - ./storage/app/public:/var/www/html/storage/app/public:rw  # Writable mount for webshell
+    user: "999:999"
+    networks:
+      ssrf_network:
+        ipv4_address: 172.18.0.3
+
+  dns:
+    build:
+      context: ./docker/dns
+      dockerfile: Dockerfile
+    container_name: ssrf_lab_dns
+    restart: unless-stopped
+    ports:
+      - "5353:53/udp"
+    networks:
+      ssrf_network:
+        ipv4_address: 172.18.0.4
+
+volumes:
+  redis_data:
+    driver: local
+
+networks:
+  ssrf_network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.18.0.0/16
+          gateway: 172.18.0.1
