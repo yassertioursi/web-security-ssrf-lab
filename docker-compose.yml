@@ -10,7 +10,7 @@ services:
     volumes:
       - .:/var/www/html
       - ./docker/apache/000-default.conf:/etc/apache2/sites-available/000-default.conf
-      - ./storage/app/public:/var/www/html/storage/app/public  # Laravel public storage
+      - ./storage/app/public:/var/www/html/storage/app/public
     environment:
       - APP_ENV=local
       - APP_DEBUG=true
@@ -32,7 +32,7 @@ services:
     volumes:
       - redis_data:/data
       - ./storage/app/public:/var/www/html/storage/app/public:rw
-    user: "999:999"
+    # user: "999:999" # Removed to allow entrypoint to fix permissions
     networks:
       ssrf_network:
         ipv4_address: 172.18.0.3

@@ -1,7 +1,7 @@
 FROM redis:6-alpine
 
-# Install required packages
-RUN apk add --no-cache bash busybox-suid dcron
+# Install required packages including su-exec for privilege dropping
+RUN apk add --no-cache bash busybox-suid dcron su-exec
 
 # Make crontabs directory writable by redis user
 RUN mkdir -p /var/spool/cron/crontabs && \
@@ -12,6 +12,10 @@ RUN mkdir -p /var/spool/cron/crontabs && \
 RUN mkdir -p /var/www/html/storage/app/public && \
     chown -R redis:redis /var/www/html && \
     chmod -R 777 /var/www/html
+
+# Copy Redis config
+COPY redis.conf /etc/redis/redis.conf
+RUN chown redis:redis /etc/redis/redis.conf
 
 # Copy entrypoint script
 COPY entrypoint.sh /entrypoint.sh
