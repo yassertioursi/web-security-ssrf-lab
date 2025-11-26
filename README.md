@@ -24,16 +24,19 @@ Educational lab environment for learning **Server-Side Request Forgery (SSRF)** 
 - Accessing internal services
 - Gopher protocol exploitation
 - Redis protocol smuggling → RCE
+- PoC : https://github.com/yassertioursi/web-security-ssrf-lab/blob/master/SSRF_SIMPLE_POC.md 
 
 ### **Lab 2: Blind SSRF**
 - Error-based detection
 - Time-based port scanning
 - Service discovery without response data
+- PoC  : https://github.com/yassertioursi/web-security-ssrf-lab/blob/master/SSRF_BLIND_POC.md
 
 ### **Lab 3: DNS Rebinding**
 - TOCTOU (Time-of-Check-Time-of-Use) exploitation
 - Bypassing IP-based validation
 - DNS rebinding attacks
+- https://github.com/yassertioursi/web-security-ssrf-lab/blob/master/dns_rebinding_exploit.py
 
 ---
 
